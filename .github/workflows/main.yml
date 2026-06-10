@@ -1,0 +1,37 @@
+name: Sync Single File
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # 每两小时自动执行一次
+  workflow_dispatch:         # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download and Update File
+        run: |
+          # 1. 替换为你想要同步的文件的 Raw 链接
+          FILE_URL="https://github.com/IY-CPU/IY/blob/e91e3e2a9f7087d57df5183896a3051557060093/spider.jar"
+          # 2. 替换为你本地仓库中保存该文件的路径
+          LOCAL_PATH="目标文件.txt" 
+          
+          # 下载文件并覆盖本地文件
+          curl -L -o "$LOCAL_PATH" "$FILE_URL"
+
+      - name: Commit and Push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 检查文件是否有变化
+          if [[ -n $(git status -s) ]]; then
+            git add .
+            git commit -m "chore: auto sync single file from upstream"
+            git push
+          else
+            echo "No changes detected, skipping commit."
+          fi
