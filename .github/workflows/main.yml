@@ -17,7 +17,7 @@ jobs:
           # 1. 替换为你想要同步的文件的 Raw 链接
           FILE_URL="https://github.com/IY-CPU/IY/blob/e91e3e2a9f7087d57df5183896a3051557060093/spider.jar"
           # 2. 替换为你本地仓库中保存该文件的路径
-          LOCAL_PATH="spider.png" 
+          LOCAL_PATH="spider.txt" 
           
           # 下载文件并覆盖本地文件
           curl -L -o "$LOCAL_PATH" "$FILE_URL"
